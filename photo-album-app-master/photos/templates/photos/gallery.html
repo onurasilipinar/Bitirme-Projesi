@@ -1,0 +1,360 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+    <title>Gallery</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <style>
+        body{
+            padding-top: 5rem;
+        }
+        .image-thumbail {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .list-group-item a {
+            text-decoration: none;
+            color: black;
+        }
+        table{
+            padding-bottom: 0px;
+        }
+    </style>
+</head>
+
+<body class="">
+<nav class="navbar fixed-top m-2 navbar-expand-lg navbar-dark bg-dark" >
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">IOE</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link active" aria-current="page" href="#hakkimizda">Hakkımızda</a>
+
+      </div>
+    </div>
+  </div>
+</nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                {% if request.user.is_authenticated %}
+                <p>Merhaba {{request.user}}</p>
+                {% endif %}
+                <div class="card">
+                    <div class="card-header">
+                        Kategoriler
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <a href="{% url 'gallery' %}">Hepsi</a>
+                        </li>
+                        {% for category in categories %}
+                        <li class=" list-group-item">
+                            <a href="{% url 'gallery' %}?category={{category.name}}">
+                                {{category.name}}
+                            </a>
+                        </li>
+                        {% endfor %}
+
+
+                        <a href="{% url 'add' %}" class="btn btn-dark btn-block btn-sm m-1">Fotoğraf Ekle</a>
+                        <a href="{% url 'logout' %}" class="btn btn-dark btn-block btn-sm m-1">Çıkış</a>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="col-md-9">
+                <div class="row">
+
+                    {% for photo in photos %}
+                    <div class="col-md-4">
+                        <div class="card my-2">
+                            <img class="image-thumbail" src="{{photo.image.url}}" alt="Card image cap">
+
+                            <div class="card-body">
+                                <small>Kategori: {{photo.category.name}}</small>
+                            </div>
+                            <a href="{% url 'photo' photo.id %}" class="btn btn-outline-dark btn-sm m-1">Görüntüle</a>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <h3>No photos...</h3>
+                    {% endfor %}
+
+
+
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="container p-3">
+        <h1 class="app-title" id="header">Yorumlar</h1>
+        <div class="card">
+            <div class="card-header">
+                Sen de yorum yaparak sitemiz hakkındaki düşüncelerini belirtebilirsin!
+            </div>
+            <div class="card-body">
+                <form id="addTaskForm">
+                    <div class="input-group mt-3">
+
+                    <input id="txtTaskName" name="taskName" type="text" class="form-control" placeholder="Yorum..." aria-describedby="btnAddNewTask">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit" id="btnAddNewTask">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                </form>
+            </div>
+
+
+        </div>
+        <div class="card mt-3">
+            <div class="card-header">
+                Kullanıcı Yorumları
+                <a id="btnDeleteAll" href="#" class="btn btn-outline-danger btn-sm delete-all float-right">
+                    Delete All
+                </a>
+            </div>
+            <ul id="task-list" class="list-group">
+                <!--<li class="list-group-item list-group-item-secondary">
+                    To do item
+                    <a href="#" class="delete-item float-right">
+                        <i class="fas fa-times"></i> bu bir icon
+                    </a>
+                </li> -->
+
+            </ul>
+        </div>
+
+    <div class="card-group" id="hakkimizda" style="padding-top: 2rem">
+  <div class="card">
+    <img src="{% static 'images/card2.jpeg' %}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Işılnaz Alan</h5>
+      <p class="card-text">Karadeniz Teknik Üniversitesi Bilgisayar Mühendisliği bölümünün 4. sınıf öğrencisiyim. Bu projenin Front-Endiyle ilgilendim. Görüntü kırpma işlemi için Udemy üzerinden Java-Script öğrendim.Bootstrap kütüphanesi kullandım.</p>
+      <p class="card-text"><small class="text-muted"></small></p>
+    </div>
+  </div>
+  <div class="card">
+    <img src="{% static 'images/card3.jpeg' %}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Erdem Ünsal</h5>
+      <p class="card-text">Karadeniz Teknik Üniversitesi Bilgisayar mühendisliği bölümü 4. sınıf öğrencisiyim. Bu projede nesne tanıma ve veri etiketleme ile ilgilendim. Orta düzeyde  YOLOv3, Front-end ve Back-end öğrendim.</p>
+      <p class="card-text"><small class="text-muted"></small></p>
+    </div>
+  </div>
+  <div class="card">
+    <img src="{% static 'images/card1.png' %}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Onur Aşılıpınar</h5>
+      <p class="card-text">Merhaba ben Karandeniz Teknik Üniversitesi Bilgisayar Mühendisliği bölümü 4. sınıf öğrencisiyim. Yapılan projenin  back-end kısmında yer aldım. Projeyi Django framework’ü kullanarak gerçekleştirdik ve Django’nun bize sunduğu hazır form ve modellerden yararlandık. Geliştirmeye el verişli ve kullanışlı bir projeyi hayata geçirmekteyiz.</p>
+      <p class="card-text"><small class="text-muted"></small></p>
+    </div>
+  </div>
+</div>
+    </div>
+
+
+
+<table class="table m-0" style="width:100%; background-color: #aaaaaa; text-align: center; font-size: small">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Ulaşın!</th>
+      <th scope="col"></th>
+      <th scope="col">İletişim</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row"></th>
+      <td>Işılnaz</td>
+      <td>Alan</td>
+      <td><a href="https://twitter.com/isilnazalan" style="text-decoration: none; color: black" >@isilnazalan</a> </td>
+    </tr>
+    <tr>
+      <th scope="row"></th>
+      <td>Erdem</td>
+      <td>Ünsal</td>
+      <td><a href="https://twitter.com/erdemunsall" style="text-decoration: none; color: black" >@erdemunsall</a></td>
+    </tr>
+    <tr>
+    <tr>
+      <th scope="row"></th>
+      <td>Onur</td>
+      <td>Aşılıpınar</td>
+      <td><a href="https://twitter.com/OnurAsilipinar" style="text-decoration: none; color: black" >@OnurAsilipinar</a></td>
+    </tr>
+    <tr>
+
+      <th scope="row"></th>
+      <td colspan="2"><b>Github</b></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+
+    <script>
+        //UI vars
+const form = document.querySelector('form');
+const input = document.querySelector('#txtTaskName');
+const btnDeleteAll = document.querySelector('#btnDeleteAll');
+const taskList = document.querySelector('#task-list');
+let items;
+
+//load items
+loadItems();
+//call event listeners
+eventListeners();
+
+function eventListeners() {
+    //submit event
+    form.addEventListener('submit', addNewItem);
+
+    //delete an item
+    taskList.addEventListener('click', deleteItem);
+
+    //delete all items
+    btnDeleteAll.addEventListener('click', deleteAllItems);
+}
+
+function loadItems() {
+    items = getItemsFromLS();
+    items.forEach(function (item) {
+        createItem(item);
+    })
+}
+
+//get items from local storage
+function getItemsFromLS() {
+    if (localStorage.getItem('items') === null) {
+        items = [];
+    } else {
+        items = JSON.parse(localStorage.getItem('items'));
+    }
+    return items;
+}
+
+//set item to local storage
+function setItemToLS(text) {
+    items = getItemsFromLS();
+    items.push(text);
+    localStorage.setItem('items', JSON.stringify(items));
+}
+
+//delete item from local storage
+function deleteItemFromLS(text) {
+    items = getItemsFromLS();
+    items.forEach(function (item, index) {
+        if (item === text) {
+            items.splice(index, 1);
+        }
+    });
+    localStorage.setItem('items', JSON.stringify(items));
+}
+function createItem(text) {
+    //create li
+    const li = document.createElement('li');
+
+    //index.htmldeki li ile setledik
+    li.className = 'list-group-item list-group-item-secondary';
+    li.appendChild(document.createTextNode(text));
+    //create a
+    const a = document.createElement('a');
+    a.classList = 'delete-item float-right';
+    a.setAttribute('href', '#');
+    a.innerHTML = '<i class="fas fa-times"></i>';
+
+    //add a to li
+    li.appendChild(a);
+
+    //add li to ul
+    taskList.appendChild(li);
+}
+
+//add new item
+function addNewItem(e) {
+
+    if (input.value === '') {
+        alert('add new item');
+    }
+
+    //create item
+    createItem(input.value);
+
+    //save to local storage
+    setItemToLS(input.value);
+
+    //clear input
+    input.value = '';
+
+
+    //formun sabit olmasını engeller, sayfa refresh olmaz
+    e.preventDefault();
+}
+
+//delete an item
+function deleteItem(e) {
+    if (e.target.className === 'fas fa-times') {
+        e.target.parentElement.parentElement.remove();
+    }
+    //delete item from local storage
+    deleteItemFromLS(e.target.parentElement.parentElement.textContent);
+
+    //sayfanın refresh olmasını engeller
+    e.preventDefault();
+}
+
+function deleteAllItems(e) {
+
+    if (confirm('are you sure?')) {
+
+        while (taskList.firstChild) {
+            taskList.removeChild(taskList.firstChild);
+        }
+        localStorage.clear();
+        //taskList içindeki bütün lileri silmiş oluruz
+        //taskList.innerHTML='';
+        //taskList.childNodes.forEach(function (item) {
+        //taskList içindeki her bir eleman=item
+        //if (item.nodeType === 1) {
+        //item.remove();
+        //}
+        //});
+    }
+
+//a etiketi olduğu için refresh olur, bunu engelliyoruz
+e.preventDefault();
+}
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+</body>
+
+
+</html>

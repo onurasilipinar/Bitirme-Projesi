@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Login/Regiser</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+    <style>
+        .login--wrapper {
+            display: flex;
+            align-items: center;
+            height: 80vh;
+            justify-content: center;
+        }
+
+        .form {
+            width: 500px;
+        }
+        table{
+            padding-bottom: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="login--wrapper">
+
+            {% if page == 'login' %}
+            <form method='post' class="form">
+                {% csrf_token %}
+                <h1>Giriş</h1>
+                <h4>Fotoğrafları görüntülemek ve arkadaşlarınızla paylaşmak için giriş yapın</h4>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Kullanıcı Adı</label>
+                    <input type="text" class="form-control" name="username" id="exampleInputEmail1"
+                        aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Şifre</label>
+                    <input type="password" class="form-control" name="password" id="exampleInputPassword1">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Giriş</button>
+                <p>Hesabın yok mu? <a href="{% url 'register' %}">Kaydol</a></p>
+            </form>
+            {% else %}
+            <form method='post'>
+                <h1>Kaydol</h1>
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">{{field.label}}</label>
+                    {{field}}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Giriş</button>
+                <p>Zaten hesabınız var mı? <a href="{% url 'login' %}">Oturum aç</a></p>
+
+            </form>
+            {% endif %}
+        </div>
+
+    </div>
+<table class="table m-0" style="margin: 3rem; width:100% ; background-color: #aaaaaa; text-align: center; font-size: small">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Ulaşın!</th>
+      <th scope="col"></th>
+      <th scope="col">İletişim</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row"></th>
+      <td>Işılnaz</td>
+      <td>Alan</td>
+      <td><a href="https://twitter.com/isilnazalan" style="text-decoration: none; color: black" >@isilnazalan</a> </td>
+    </tr>
+    <tr>
+      <th scope="row"></th>
+      <td>Erdem</td>
+      <td>Ünsal</td>
+      <td><a href="https://twitter.com/erdemunsall" style="text-decoration: none; color: black" >@erdemunsall</a></td>
+    </tr>
+    <tr>
+    <tr>
+      <th scope="row"></th>
+      <td>Onur</td>
+      <td>Aşılıpınar</td>
+      <td><a href="https://twitter.com/OnurAsilipinar" style="text-decoration: none; color: black" >@OnurAsilipinar</a></td>
+    </tr>
+    <tr>
+
+      <th scope="row"></th>
+      <td colspan="2"><b>Github</b></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+</body>
+
+</html>
